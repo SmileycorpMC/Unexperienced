@@ -27,17 +27,17 @@ public class ItemDrinkableExpBottle<T extends Item> extends ItemExpBottle {
 	
  	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
-        return ConfigHandler.canDrinkBottles() ? 32 : wrapped.getMaxItemUseDuration(stack);
+        return CommonConfigHandler.canDrinkBottles() ? 32 : wrapped.getMaxItemUseDuration(stack);
     }
 
     @Override
 	public EnumAction getItemUseAction(ItemStack stack) {
-        return ConfigHandler.canDrinkBottles() ? EnumAction.DRINK : wrapped.getItemUseAction(stack);
+        return CommonConfigHandler.canDrinkBottles() ? EnumAction.DRINK : wrapped.getItemUseAction(stack);
     }
 
     @Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-    	if (ConfigHandler.canDrinkBottles()) {
+    	if (CommonConfigHandler.canDrinkBottles()) {
 	        player.setActiveHand(hand);
 	        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     	} return wrapped.onItemRightClick(world, player, hand);
@@ -45,10 +45,10 @@ public class ItemDrinkableExpBottle<T extends Item> extends ItemExpBottle {
 
     @Override
 	public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entity) {
-    	if (ConfigHandler.canDrinkBottles()) {
+    	if (CommonConfigHandler.canDrinkBottles()) {
 			if (entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
-				player.addExperience(ConfigHandler.bottleExperience);
+				player.addExperience(CommonConfigHandler.bottleExperience);
 				if (player instanceof EntityPlayerMP) {
 					CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP)player, stack);
 				}

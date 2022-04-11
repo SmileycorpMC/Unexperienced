@@ -1,0 +1,10 @@
+{
+	"required": true,
+	"package": "net.smileycorp.unexperienced.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"refmap": "unexperienced.refmap.json",
+	"mixins": [
+		"MixinExperienceBottleItem"
+	],
+	"minVersion": "0.8"
+}
