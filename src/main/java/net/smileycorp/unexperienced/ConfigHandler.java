@@ -31,7 +31,7 @@ public class ConfigHandler {
 
 		} catch (Exception e) {
 		} finally {
-    	if (config.hasChanged()) config.save();
+			if (config.hasChanged()) config.save();
 		}
 	}
 

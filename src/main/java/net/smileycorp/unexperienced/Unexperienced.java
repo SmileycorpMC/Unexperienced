@@ -3,8 +3,6 @@ package net.smileycorp.unexperienced;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.Item;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -39,12 +37,12 @@ public class Unexperienced {
 	public static void preInit(FMLPreInitializationEvent event) {
 		ConfigHandler.config = new Configuration(event.getSuggestedConfigurationFile());
 		ConfigHandler.syncConfig();
+		PacketHandler.initPackets();
 	}
 
 	@EventHandler
 	public static void postInit(FMLPostInitializationEvent event) {
-		Item exp_bottle = ForgeRegistries.ITEMS.getValue(new ResourceLocation("exp_bottle"));
-		ForgeRegistries.ITEMS.register(new ItemDrinkableExpBottle<>(exp_bottle));
+		ForgeRegistries.ITEMS.register(new ItemDrinkableExpBottle());
 	}
 
 	@SubscribeEvent(priority=EventPriority.HIGHEST)
@@ -57,9 +55,7 @@ public class Unexperienced {
 	@SubscribeEvent
 	public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
-		if (!player.world.isRemote) {
-			PacketHandler.NETWORK_INSTANCE.sendTo(new BoolMessage(ConfigHandler.drinkBottles), (EntityPlayerMP) player);
-		}
+		if (!player.world.isRemote) PacketHandler.NETWORK_INSTANCE.sendTo(new BoolMessage(ConfigHandler.drinkBottles), (EntityPlayerMP) player);
 	}
 
 }
