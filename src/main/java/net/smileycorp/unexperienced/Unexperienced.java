@@ -1,14 +1,21 @@
 package net.smileycorp.unexperienced;
 
+import java.util.Collection;
+
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.end.DragonFightManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -60,8 +67,28 @@ public class Unexperienced {
 
 	@SubscribeEvent(priority=EventPriority.HIGHEST)
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-		if (event.getEntity() instanceof EntityXPOrb && ConfigHandler.disableXP) {
+		Entity entity = event.getEntity();
+		if (entity instanceof EntityXPOrb && (ConfigHandler.disableXP || ConfigHandler.directXP)) {
+			if (ConfigHandler.directXP &! entity.world.isRemote) {
+				EntityPlayer player = entity.world.getClosestPlayerToEntity(entity, 8.0D);
+				if (player !=null) addExperience(player, ((EntityXPOrb)entity).xpValue);
+			}
 			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent(priority=EventPriority.HIGHEST)
+	public void onEntityDeath(LivingDeathEvent event) {
+		EntityLivingBase entity = event.getEntityLiving();
+		if (!event.getEntityLiving().world.isRemote) {
+			if (ConfigHandler.directXP && entity instanceof EntityDragon) {
+				DragonFightManager fightManager = ((EntityDragon) entity).getFightManager();
+				if (fightManager != null) {
+					Collection<EntityPlayerMP> players = fightManager.bossInfo.getPlayers();
+					int amount = (int) Math.ceil(((double)(fightManager.hasPreviouslyKilledDragon() ? 500 : 12000))/(double)players.size());
+					for (EntityPlayer player : players) addExperience(player, amount);
+				}
+			}
 		}
 	}
 
