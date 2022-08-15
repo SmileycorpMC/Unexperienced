@@ -1,11 +1,15 @@
 package net.smileycorp.unexperienced;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Enchantments;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -45,6 +49,15 @@ public class Unexperienced {
 		ForgeRegistries.ITEMS.register(new ItemDrinkableExpBottle());
 	}
 
+	@SubscribeEvent(priority=EventPriority.LOWEST)
+	public void onXPDrop(LivingExperienceDropEvent event) {
+		if (ConfigHandler.directXP &! (event.getEntityLiving() instanceof EntityPlayer)) {
+			EntityPlayer player = event.getAttackingPlayer();
+			addExperience(player, event.getDroppedExperience());
+			event.setCanceled(true);
+		}
+	}
+
 	@SubscribeEvent(priority=EventPriority.HIGHEST)
 	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		if (event.getEntity() instanceof EntityXPOrb && ConfigHandler.disableXP) {
@@ -56,6 +69,23 @@ public class Unexperienced {
 	public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
 		EntityPlayer player = event.player;
 		if (!player.world.isRemote) PacketHandler.NETWORK_INSTANCE.sendTo(new BoolMessage(ConfigHandler.drinkBottles), (EntityPlayerMP) player);
+	}
+
+	public static void addExperience(EntityPlayer player, int xpValue) {
+		player.onItemPickup(new EntityXPOrb(player.world, 0, 0, 0, xpValue), 1);
+		ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
+		if (!itemstack.isEmpty() && itemstack.isItemDamaged()) {
+			float ratio = itemstack.getItem().getXpRepairRatio(itemstack);
+			int i = Math.min(roundAverage(xpValue * ratio), itemstack.getItemDamage());
+			xpValue -= roundAverage(i / ratio);
+			itemstack.setItemDamage(itemstack.getItemDamage() - i);
+		}
+		if (xpValue > 0) player.addExperience(xpValue);
+	}
+
+	private static int roundAverage(float value) {
+		double floor = Math.floor(value);
+		return (int) floor + (Math.random() < value - floor ? 1 : 0);
 	}
 
 }

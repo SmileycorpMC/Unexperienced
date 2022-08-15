@@ -14,7 +14,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.12.2-1.1.1'
+version = '1.12.2-1.2.0'
 group = "net.smileycorp.unexperienced"
 archivesBaseName = "Unexperienced"
 
@@ -30,7 +30,7 @@ minecraft {
     mappings channel: 'snapshot', version: '20171003-1.12'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
-    accessTransformer = file('src/main/resources/META-INF/ldoh_at.cfg')
+    accessTransformer = file('src/main/resources/META-INF/access_transformer.cfg')
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.

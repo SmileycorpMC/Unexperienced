@@ -44,7 +44,7 @@ public class ItemDrinkableExpBottle extends ItemExpBottle {
 		if (ConfigHandler.canDrinkBottles()) {
 			if (entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
-				player.addExperience(ConfigHandler.bottleExperience);
+				Unexperienced.addExperience(player, ConfigHandler.bottleExperience);
 				if (player instanceof EntityPlayerMP) {
 					CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP)player, stack);
 				}
