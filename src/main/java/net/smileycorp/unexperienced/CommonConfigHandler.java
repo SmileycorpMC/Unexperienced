@@ -14,18 +14,17 @@ public class CommonConfigHandler {
 	static BooleanValue drinkBottles;
 	public static boolean drinkBottlesClient;
 	public static ConfigValue<Integer> bottleExperience;
-	public static BooleanValue hideBar;
 
 	static {
-			builder.push("general");
-			disableXP = builder.comment("Should xp drops be disabled.?").define("disableXP", true);
+		builder.push("general");
+		disableXP = builder.comment("Should xp drops be disabled.?").define("disableXP", true);
 
-			drinkBottles = builder.comment("Can Bottles of enchanting be drunk to gain experience?").define("drinkBottles", true);
+		drinkBottles = builder.comment("Can Bottles of enchanting be drunk to gain experience?").define("drinkBottles", true);
 
-			bottleExperience = builder.comment("How many experience points to Bottles of Enchanting give if drunk?").define("bottleExperience", 7);
+		bottleExperience = builder.comment("How many experience points to Bottles of Enchanting give if drunk?").define("bottleExperience", 7);
 
-			builder.pop();
-			config = builder.build();
+		builder.pop();
+		config = builder.build();
 	}
 
 	public static boolean canDrinkBottles() {

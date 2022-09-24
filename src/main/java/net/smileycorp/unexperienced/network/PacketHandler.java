@@ -1,5 +1,6 @@
 package net.smileycorp.unexperienced.network;
 
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
@@ -16,8 +17,24 @@ public class PacketHandler {
 	public static void initPackets() {
 		NETWORK_INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(ModDefinitions.modid, "main"),
 				()-> "1", "1"::equals, "1"::equals);
-		NETWORK_INSTANCE.registerMessage(0, BoolMessage.class, (t, buf)->{try {t.write(buf);}catch(Exception e){}},
-				(buf)-> {try{new BoolMessage().read(buf);}catch(Exception e){} return null;}, (T, K)-> processSyncMessage(T, K.get()));
+		NETWORK_INSTANCE.registerMessage(0, BoolMessage.class, PacketHandler::writeMessage,
+				PacketHandler::readMessage, (T, K)-> processSyncMessage(T, K.get()));
+	}
+
+	private static void writeMessage(BoolMessage msg, PacketBuffer buf) {
+		try {
+			msg.write(buf);
+		}
+		catch(Exception e){}
+	}
+
+	private static BoolMessage readMessage(PacketBuffer buf) {
+		BoolMessage msg = new BoolMessage();
+		try {
+			msg.write(buf);
+		}
+		catch(Exception e){}
+		return msg;
 	}
 
 	public static void processSyncMessage(BoolMessage message, Context ctx) {

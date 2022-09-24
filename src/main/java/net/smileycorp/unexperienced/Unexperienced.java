@@ -25,6 +25,7 @@ public class Unexperienced {
 		MinecraftForge.EVENT_BUS.register(this);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfigHandler.config);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfigHandler.config);
+		PacketHandler.initPackets();
 	}
 
 	@SubscribeEvent(priority=EventPriority.HIGHEST)

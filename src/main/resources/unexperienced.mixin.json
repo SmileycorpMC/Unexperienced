@@ -4,7 +4,8 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "unexperienced.refmap.json",
 	"mixins": [
-		"MixinExperienceBottleItem"
+		"MixinExperienceBottleItem",
+		"MixinItem"
 	],
 	"minVersion": "0.8"
 }
