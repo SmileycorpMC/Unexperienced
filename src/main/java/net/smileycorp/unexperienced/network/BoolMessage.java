@@ -1,37 +1,33 @@
 package net.smileycorp.unexperienced.network;
 
-import java.io.IOException;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketListener;
+import net.minecraft.network.protocol.Packet;
 
-import net.minecraft.network.INetHandler;
-import net.minecraft.network.IPacket;
-import net.minecraft.network.PacketBuffer;
+public class BoolMessage implements Packet<PacketListener> {
 
-public class BoolMessage implements IPacket<INetHandler> {
+	public BoolMessage() {}
 
-		public BoolMessage() {}
+	private boolean value;
 
-		private boolean value;
+	public BoolMessage(boolean value) {
+		this.value=value;
+	}
 
-		public BoolMessage(boolean value) {
-			this.value=value;
-		}
+	public boolean getValue() {
+		return value;
+	}
 
-		public boolean getValue() {
-			return value;
-		}
+	@Override
+	public void write(FriendlyByteBuf buf) {
+		buf.writeBoolean(value);
+	}
 
-		@Override
-		public void read(PacketBuffer buf) throws IOException {
-			value = buf.readBoolean();
-		}
+	public void read(FriendlyByteBuf buf) {
+		value = buf.readBoolean();
+	}
 
-		@Override
-		public void write(PacketBuffer buf) throws IOException {
-			buf.writeBoolean(value);
-		}
-
-		@Override
-		public void handle(INetHandler handler) {}
-
+	@Override
+	public void handle(PacketListener listener) {}
 
 }

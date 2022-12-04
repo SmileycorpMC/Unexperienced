@@ -3,7 +3,7 @@ package net.smileycorp.unexperienced;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
-import net.minecraftforge.fml.common.thread.SidedThreadGroups;
+import net.minecraftforge.fml.util.thread.SidedThreadGroups;
 
 public class CommonConfigHandler {
 

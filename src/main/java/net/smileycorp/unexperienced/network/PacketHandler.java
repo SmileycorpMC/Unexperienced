@@ -1,12 +1,12 @@
 package net.smileycorp.unexperienced.network;
 
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.network.NetworkEvent.Context;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 import net.smileycorp.unexperienced.CommonConfigHandler;
 import net.smileycorp.unexperienced.ModDefinitions;
 
@@ -21,17 +21,17 @@ public class PacketHandler {
 				PacketHandler::readMessage, (T, K)-> processSyncMessage(T, K.get()));
 	}
 
-	private static void writeMessage(BoolMessage msg, PacketBuffer buf) {
+	private static void writeMessage(BoolMessage msg, FriendlyByteBuf buf) {
 		try {
 			msg.write(buf);
 		}
 		catch(Exception e){}
 	}
 
-	private static BoolMessage readMessage(PacketBuffer buf) {
+	private static BoolMessage readMessage(FriendlyByteBuf buf) {
 		BoolMessage msg = new BoolMessage();
 		try {
-			msg.write(buf);
+			msg.read(buf);
 		}
 		catch(Exception e){}
 		return msg;

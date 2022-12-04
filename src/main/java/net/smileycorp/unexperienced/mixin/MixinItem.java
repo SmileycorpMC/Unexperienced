@@ -6,21 +6,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.UseAction;
-import net.minecraft.world.World;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 import net.smileycorp.unexperienced.CommonConfigHandler;
 import net.smileycorp.unexperienced.EventHandler;
 
 @Mixin(Item.class)
 public class MixinItem {
 
-	@Inject(at=@At("HEAD"), method = "getUseDuration(Lnet/minecraft/item/ItemStack;)I", cancellable = true)
+	@Inject(at=@At("HEAD"), method = "m_8105_(Lnet/minecraft/world/item/ItemStack;)I", cancellable = true, remap = false)
 	public void getUseDuration(ItemStack stack, CallbackInfoReturnable<Integer> callback) {
 		if (CommonConfigHandler.canDrinkBottles() && stack.getItem() == Items.EXPERIENCE_BOTTLE) {
 			callback.setReturnValue(32);
@@ -28,26 +28,26 @@ public class MixinItem {
 		}
 	}
 
-	@Inject(at=@At("HEAD"), method = "getUseAnimation(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/item/UseAction;", cancellable = true)
-	public void getUseAnimation(ItemStack stack, CallbackInfoReturnable<UseAction> callback) {
+	@Inject(at=@At("HEAD"), method = "m_6164_(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/UseAnim;", cancellable = true, remap = false)
+	public void getUseAnimation(ItemStack stack, CallbackInfoReturnable<UseAnim> callback) {
 		if (CommonConfigHandler.canDrinkBottles() && stack.getItem() == Items.EXPERIENCE_BOTTLE) {
-			callback.setReturnValue(UseAction.DRINK);
+			callback.setReturnValue(UseAnim.DRINK);
 			callback.cancel();
 		}
 	}
 
-	@Inject(at=@At("HEAD"), method = "finishUsingItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/world/World;Lnet/minecraft/entity/LivingEntity;)Lnet/minecraft/item/ItemStack;", cancellable = true)
-	public void finishUsingItem(ItemStack stack, World world, LivingEntity entity, CallbackInfoReturnable<ItemStack> callback) {
+	@Inject(at=@At("HEAD"), method = "m_5922_(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/item/ItemStack;", cancellable = true, remap = false)
+	public void finishUsingItem(ItemStack stack, Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> callback) {
 		if (CommonConfigHandler.canDrinkBottles() && stack.getItem() == Items.EXPERIENCE_BOTTLE) {
-			if (entity instanceof PlayerEntity) {
-				PlayerEntity player = (PlayerEntity) entity;
+			if (entity instanceof Player) {
+				Player player = (Player) entity;
 				EventHandler.addExperience(player, CommonConfigHandler.bottleExperience.get());
-				if (player instanceof ServerPlayerEntity) {
-					CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)player, stack);
+				if (player instanceof ServerPlayer) {
+					CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer)player, stack);
 				}
 				if (stack.getCount()>1 &! player.isCreative()) {
 					ItemStack drop = new ItemStack(Items.GLASS_BOTTLE);
-					if (!player.inventory.add(drop)) {
+					if (!player.getInventory().add(drop)) {
 						player.drop(drop, false);
 					}
 				}
