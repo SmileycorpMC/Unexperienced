@@ -9,7 +9,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.dimension.end.EndDragonFight;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingExperienceDropEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -25,7 +25,7 @@ public class EventHandler {
 
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void onXPDrop(LivingExperienceDropEvent event) {
-		if (CommonConfigHandler.directXP.get() &! (event.getEntityLiving() instanceof Player)) {
+		if (CommonConfigHandler.directXP.get() &! (event.getEntity() instanceof Player)) {
 			Player player = event.getAttackingPlayer();
 			addExperience(player, event.getDroppedExperience());
 			event.setCanceled(true);
@@ -33,7 +33,7 @@ public class EventHandler {
 	}
 
 	@SubscribeEvent(priority=EventPriority.HIGHEST)
-	public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+	public void onEntityJoinWorld(EntityJoinLevelEvent event) {
 		Entity entity = event.getEntity();
 		if (entity instanceof ExperienceOrb && (CommonConfigHandler.disableXP.get() || CommonConfigHandler.directXP.get())) {
 			if (CommonConfigHandler.directXP.get() &! entity.level.isClientSide) {
@@ -46,8 +46,8 @@ public class EventHandler {
 
 	@SubscribeEvent(priority=EventPriority.HIGHEST)
 	public void onEntityDeath(LivingDeathEvent event) {
-		LivingEntity entity = event.getEntityLiving();
-		if (!event.getEntityLiving().level.isClientSide) {
+		LivingEntity entity = event.getEntity();
+		if (!event.getEntity().level.isClientSide) {
 			if (CommonConfigHandler.directXP.get() && entity instanceof EnderDragon) {
 				EndDragonFight fightManager = ((EnderDragon) entity).getDragonFight();
 				if (fightManager != null) {
@@ -61,7 +61,7 @@ public class EventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-		Player player = event.getPlayer();
+		Player player = event.getEntity();
 		if (!player.level.isClientSide && player instanceof ServerPlayer)
 			PacketHandler.NETWORK_INSTANCE.sendTo(new BoolMessage(CommonConfigHandler.drinkBottles.get()),
 					((ServerPlayer)player).connection.connection, NetworkDirection.PLAY_TO_CLIENT);
