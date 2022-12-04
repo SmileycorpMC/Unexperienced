@@ -35,7 +35,7 @@ public class ConfigHandler {
 					7, "How many experience points to Bottles of Enchanting give if drunk?").getInt();
 
 			hideBar = config.get("client", "hideBar",
-					false, "Should the exp bar be hidden?").getBoolean();
+					true, "Should the exp bar be hidden?").getBoolean();
 
 			showBarItems = config.get("client", "showBarItems",
 					new String[]{"minecraft:experience_bottle"}, "Items that when held show the xp bar, if hideBar is false").getStringList();

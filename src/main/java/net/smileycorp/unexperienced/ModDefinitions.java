@@ -4,6 +4,6 @@ public class ModDefinitions {
 
 	public static final String modid = "unexperienced";
 	public static final String name = "Unexperienced";
-	public static final String version = "1.2.0";
+	public static final String version = "1.2.0a";
 
 }

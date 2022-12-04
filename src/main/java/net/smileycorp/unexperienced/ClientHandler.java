@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ClientHandler {
 
-	@SubscribeEvent(priority=EventPriority.LOWEST)
+	@SubscribeEvent(priority=EventPriority.HIGHEST)
 	public void renderOverlay(RenderGameOverlayEvent event) {
 		if (event.getType() == ElementType.EXPERIENCE && ConfigHandler.hideBar) {
 			Minecraft mc = Minecraft.getMinecraft();
@@ -19,9 +19,11 @@ public class ClientHandler {
 			if (ConfigHandler.shouldShowBar(player.getHeldItemMainhand())) return;
 			if (ConfigHandler.shouldShowBar(player.getHeldItemOffhand())) return;
 			RayTraceResult hovered = mc.objectMouseOver;
-			if (hovered.typeOfHit == RayTraceResult.Type.BLOCK) {
-				IBlockState state = mc.world.getBlockState(hovered.getBlockPos());
-				if (ConfigHandler.shouldShowBar(state)) return;
+			if (hovered != null) {
+				if (hovered.typeOfHit == RayTraceResult.Type.BLOCK) {
+					IBlockState state = mc.world.getBlockState(hovered.getBlockPos());
+					if (ConfigHandler.shouldShowBar(state)) return;
+				}
 			}
 			event.setCanceled(true);
 		}
