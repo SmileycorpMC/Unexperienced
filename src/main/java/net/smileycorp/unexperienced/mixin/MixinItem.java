@@ -15,6 +15,7 @@ import net.minecraft.item.Items;
 import net.minecraft.item.UseAction;
 import net.minecraft.world.World;
 import net.smileycorp.unexperienced.CommonConfigHandler;
+import net.smileycorp.unexperienced.EventHandler;
 
 @Mixin(Item.class)
 public class MixinItem {
@@ -40,7 +41,7 @@ public class MixinItem {
 		if (CommonConfigHandler.canDrinkBottles() && stack.getItem() == Items.EXPERIENCE_BOTTLE) {
 			if (entity instanceof PlayerEntity) {
 				PlayerEntity player = (PlayerEntity) entity;
-				player.giveExperiencePoints(CommonConfigHandler.bottleExperience.get());
+				EventHandler.addExperience(player, CommonConfigHandler.bottleExperience.get());
 				if (player instanceof ServerPlayerEntity) {
 					CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayerEntity)player, stack);
 				}

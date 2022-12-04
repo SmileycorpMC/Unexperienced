@@ -11,13 +11,16 @@ public class CommonConfigHandler {
 	public static final ForgeConfigSpec config;
 
 	public static BooleanValue disableXP;
+	public static BooleanValue directXP;
 	static BooleanValue drinkBottles;
 	public static boolean drinkBottlesClient;
 	public static ConfigValue<Integer> bottleExperience;
 
 	static {
 		builder.push("general");
-		disableXP = builder.comment("Should xp drops be disabled.?").define("disableXP", true);
+		disableXP = builder.comment("Should xp drops be disabled?").define("disableXP", true);
+
+		directXP = builder.comment("Should mob xp drops be given directly to the player?").define("directXP", false);
 
 		drinkBottles = builder.comment("Can Bottles of enchanting be drunk to gain experience?").define("drinkBottles", true);
 

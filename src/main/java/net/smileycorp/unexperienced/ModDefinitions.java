@@ -2,8 +2,8 @@ package net.smileycorp.unexperienced;
 
 public class ModDefinitions {
 
-	public static final String modid = "unexperienced";
-	public static final String name = "Unexperienced";
-	public static final String version = "1.1.0";
+	public static final String MODID = "unexperienced";
+	public static final String NAME = "Unexperienced";
+	public static final String VERSION = "2.0.0";
 
 }
