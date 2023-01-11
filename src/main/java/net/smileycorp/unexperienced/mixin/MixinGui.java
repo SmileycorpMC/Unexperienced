@@ -20,6 +20,7 @@ public class MixinGui {
 
 	@Inject(at=@At("HEAD"), method = "m_93071_(Lcom/mojang/blaze3d/vertex/PoseStack;I)V", cancellable = true, remap = false)
 	public void renderExperienceBar(PoseStack poseStack, int p_93073_, CallbackInfo callback) {
+		if (!ClientConfigHandler.hideBar.get()) return;
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 		if (ClientConfigHandler.shouldShowBar(player.getMainHandItem())) return;
