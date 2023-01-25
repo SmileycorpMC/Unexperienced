@@ -68,7 +68,7 @@ public class EventHandler {
 	}
 
 	public static void addExperience(Player player, int xpValue) {
-		new ExperienceOrb(player.level, 0, 0, 0, xpValue).playerTouch(player);
+		if (player != null) new ExperienceOrb(player.level, 0, 0, 0, xpValue).playerTouch(player);
 	}
 
 }
