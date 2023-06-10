@@ -1,13 +1,13 @@
 modLoader="javafml" #mandatory
-loaderVersion="[34,)"
+loaderVersion="[46,)"
 license="GNU LESSER GENERAL PUBLIC LICENSE Version 2.1"
 
 [[mods]]
 modId="unexperienced"
-version="2.0.0b"
+version="2.0.0"
 displayName="Unexperienced"
 displayURL="https://www.curseforge.com/minecraft/mc-mods/unexperienced"
-updateJSONURL="https://raw.githubusercontent.com/SmileycorpMC/Unexperienced/1.19/update.json"
+updateJSONURL="https://raw.githubusercontent.com/SmileycorpMC/Unexperienced/1.20/update.json"
 credits="Smileycorp"
 authors=""
 description="Disables XP Drops"

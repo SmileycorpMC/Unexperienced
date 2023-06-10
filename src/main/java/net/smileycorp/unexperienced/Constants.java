@@ -1,6 +1,6 @@
 package net.smileycorp.unexperienced;
 
-public class ModDefinitions {
+public class Constants {
 
 	public static final String MODID = "unexperienced";
 	public static final String NAME = "Unexperienced";

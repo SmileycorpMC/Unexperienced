@@ -20,7 +20,7 @@ import net.smileycorp.unexperienced.EventHandler;
 @Mixin(Item.class)
 public class MixinItem {
 
-	@Inject(at=@At("HEAD"), method = "m_8105_(Lnet/minecraft/world/item/ItemStack;)I", cancellable = true, remap = false)
+	@Inject(at=@At("HEAD"), method = "getUseDuration(Lnet/minecraft/world/item/ItemStack;)I", cancellable = true)
 	public void getUseDuration(ItemStack stack, CallbackInfoReturnable<Integer> callback) {
 		if (CommonConfigHandler.canDrinkBottles() && stack.getItem() == Items.EXPERIENCE_BOTTLE) {
 			callback.setReturnValue(32);
@@ -28,7 +28,7 @@ public class MixinItem {
 		}
 	}
 
-	@Inject(at=@At("HEAD"), method = "m_6164_(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/UseAnim;", cancellable = true, remap = false)
+	@Inject(at=@At("HEAD"), method = "getUseAnimation(Lnet/minecraft/world/item/ItemStack;)Lnet/minecraft/world/item/UseAnim;", cancellable = true)
 	public void getUseAnimation(ItemStack stack, CallbackInfoReturnable<UseAnim> callback) {
 		if (CommonConfigHandler.canDrinkBottles() && stack.getItem() == Items.EXPERIENCE_BOTTLE) {
 			callback.setReturnValue(UseAnim.DRINK);
@@ -36,7 +36,7 @@ public class MixinItem {
 		}
 	}
 
-	@Inject(at=@At("HEAD"), method = "m_5922_(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/item/ItemStack;", cancellable = true, remap = false)
+	@Inject(at=@At("HEAD"), method = "finishUsingItem(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/LivingEntity;)Lnet/minecraft/world/item/ItemStack;", cancellable = true)
 	public void finishUsingItem(ItemStack stack, Level level, LivingEntity entity, CallbackInfoReturnable<ItemStack> callback) {
 		if (CommonConfigHandler.canDrinkBottles() && stack.getItem() == Items.EXPERIENCE_BOTTLE) {
 			if (entity instanceof Player) {

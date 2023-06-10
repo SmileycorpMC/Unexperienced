@@ -1,5 +1,6 @@
 package net.smileycorp.unexperienced.mixin;
 
+import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,8 +19,8 @@ import net.smileycorp.unexperienced.client.ClientConfigHandler;
 @Mixin(Gui.class)
 public class MixinGui {
 
-	@Inject(at=@At("HEAD"), method = "m_93071_(Lcom/mojang/blaze3d/vertex/PoseStack;I)V", cancellable = true, remap = false)
-	public void renderExperienceBar(PoseStack poseStack, int p_93073_, CallbackInfo callback) {
+	@Inject(at=@At("HEAD"), method = "renderExperienceBar(Lnet/minecraft/client/gui/GuiGraphics;I)V", cancellable = true)
+	public void renderExperienceBar(GuiGraphics graphics, int p_93073_, CallbackInfo callback) {
 		if (!ClientConfigHandler.hideBar.get()) return;
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
@@ -28,7 +29,7 @@ public class MixinGui {
 		HitResult hovered = mc.hitResult;
 		if (hovered != null) {
 			if (hovered.getType() == HitResult.Type.BLOCK) {
-				BlockState state = mc.level.getBlockState(new BlockPos(hovered.getLocation()));
+				BlockState state = mc.level.getBlockState(BlockPos.containing(hovered.getLocation()));
 				if (ClientConfigHandler.shouldShowBar(state)) return;
 			}
 		}

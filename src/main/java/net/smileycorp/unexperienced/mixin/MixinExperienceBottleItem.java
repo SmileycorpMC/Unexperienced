@@ -16,7 +16,7 @@ import net.smileycorp.unexperienced.CommonConfigHandler;
 @Mixin(ExperienceBottleItem.class)
 public class MixinExperienceBottleItem {
 
-	@Inject(at=@At("HEAD"), method = "m_7203_(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;", cancellable = true, remap = false)
+	@Inject(at=@At("HEAD"), method = "use(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/InteractionResultHolder;", cancellable = true)
 	public void use(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> callback) {
 		if (CommonConfigHandler.canDrinkBottles()) {
 			player.startUsingItem(hand);

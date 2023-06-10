@@ -8,14 +8,14 @@ import net.minecraftforge.network.NetworkEvent.Context;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import net.smileycorp.unexperienced.CommonConfigHandler;
-import net.smileycorp.unexperienced.ModDefinitions;
+import net.smileycorp.unexperienced.Constants;
 
 public class PacketHandler {
 
 	public static SimpleChannel NETWORK_INSTANCE;
 
 	public static void initPackets() {
-		NETWORK_INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(ModDefinitions.MODID, "main"),
+		NETWORK_INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Constants.MODID, "main"),
 				()-> "1", "1"::equals, "1"::equals);
 		NETWORK_INSTANCE.registerMessage(0, BoolMessage.class, PacketHandler::writeMessage,
 				PacketHandler::readMessage, (T, K)-> processSyncMessage(T, K.get()));

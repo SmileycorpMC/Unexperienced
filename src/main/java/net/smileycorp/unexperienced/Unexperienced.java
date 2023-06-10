@@ -7,7 +7,7 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.smileycorp.unexperienced.client.ClientConfigHandler;
 import net.smileycorp.unexperienced.network.PacketHandler;
 
-@Mod(ModDefinitions.MODID)
+@Mod(Constants.MODID)
 public class Unexperienced {
 
 	public Unexperienced() {
