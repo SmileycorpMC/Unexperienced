@@ -1,7 +1,5 @@
 package net.smileycorp.unexperienced;
 
-import java.util.Collection;
-
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,6 +21,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.network.NetworkDirection;
 import net.smileycorp.unexperienced.network.BoolMessage;
 import net.smileycorp.unexperienced.network.PacketHandler;
+
+import java.util.Collection;
 
 @EventBusSubscriber(modid = Constants.MODID)
 public class EventHandler {

@@ -1,9 +1,6 @@
 package net.smileycorp.unexperienced.client;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +10,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.List;
 
 public class ClientConfigHandler {
 
