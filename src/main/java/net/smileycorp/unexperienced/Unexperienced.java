@@ -30,8 +30,8 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = ModDefinitions.modid, name=ModDefinitions.name, version=ModDefinitions.version)
-@EventBusSubscriber(modid = ModDefinitions.modid)
+@Mod(modid = Constants.modid, name= Constants.name, version= Constants.version)
+@EventBusSubscriber(modid = Constants.modid)
 public class Unexperienced {
 
 	@Instance
@@ -58,8 +58,10 @@ public class Unexperienced {
 
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void onXPDrop(LivingExperienceDropEvent event) {
-		if (ConfigHandler.directXP &! (event.getEntityLiving() instanceof EntityPlayer)) {
+		EntityLivingBase entity = event.getEntityLiving();
+		if (ConfigHandler.directXP &! (entity instanceof EntityPlayer)) {
 			EntityPlayer player = event.getAttackingPlayer();
+			if (player == null) player = entity.world.getClosestPlayerToEntity(entity, 16);
 			addExperience(player, event.getDroppedExperience());
 			event.setCanceled(true);
 		}
@@ -70,7 +72,7 @@ public class Unexperienced {
 		Entity entity = event.getEntity();
 		if (entity instanceof EntityXPOrb && (ConfigHandler.disableXP || ConfigHandler.directXP)) {
 			if (ConfigHandler.directXP &! entity.world.isRemote) {
-				EntityPlayer player = entity.world.getClosestPlayerToEntity(entity, 8.0D);
+				EntityPlayer player = entity.world.getClosestPlayerToEntity(entity, 16);
 				if (player !=null) addExperience(player, ((EntityXPOrb)entity).xpValue);
 			}
 			event.setCanceled(true);
@@ -99,6 +101,7 @@ public class Unexperienced {
 	}
 
 	public static void addExperience(EntityPlayer player, int xpValue) {
+		if (player == null) return;
 		player.onItemPickup(new EntityXPOrb(player.world, 0, 0, 0, xpValue), 1);
 		ItemStack itemstack = EnchantmentHelper.getEnchantedItem(Enchantments.MENDING, player);
 		if (!itemstack.isEmpty() && itemstack.isItemDamaged()) {

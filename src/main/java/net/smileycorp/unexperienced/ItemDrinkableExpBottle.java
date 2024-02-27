@@ -45,12 +45,8 @@ public class ItemDrinkableExpBottle extends ItemExpBottle {
 			if (entity instanceof EntityPlayer) {
 				EntityPlayer player = (EntityPlayer) entity;
 				Unexperienced.addExperience(player, ConfigHandler.bottleExperience);
-				if (player instanceof EntityPlayerMP) {
-					CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP)player, stack);
-				}
-				if (stack.getCount()>1 &! player.isCreative()) {
-					player.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
-				}
+				if (player instanceof EntityPlayerMP) CriteriaTriggers.CONSUME_ITEM.trigger((EntityPlayerMP)player, stack);
+				if (stack.getCount()>1 &! player.isCreative()) player.inventory.addItemStackToInventory(new ItemStack(Items.GLASS_BOTTLE));
 			}
 			stack.shrink(1);
 			return stack.getCount() < 1 ? new ItemStack(Items.GLASS_BOTTLE) : stack;
